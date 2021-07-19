@@ -1,0 +1,40 @@
+version: "3"
+
+services: 
+    mysql:
+        image: mysql:8.0.23
+        command: --default-authentication-plugin=mysql_native_password
+        volumes: 
+            - ./volumes/mysql:/var/lib/mysql
+        ports: 
+            - "127.0.0.1:3306:3306"
+        restart: unless-stopped
+        environment: 
+            MYSQL_ROOT_PASSWORD: example
+        networks: 
+            - srv
+        
+    postgres:
+        image: postgres:13.1
+        environment: 
+            PGDATA: /var/lib/postgresql/data/pgdata
+            POSTGRES_PASSWORD: example
+        volumes:
+            - ./volumes/postgres:/var/lib/postgresql/data
+        ports: 
+            - "127.0.0.1:5432:5432"
+        restart: unless-stopped    
+        networks: 
+            - srv
+            
+    adminer:
+        image: adminer
+        restart: unless-stopped
+        ports:
+            - "127.0.0.1:8080:8080"
+        networks: 
+            - srv
+
+networks: 
+    srv:
+        driver: bridge
