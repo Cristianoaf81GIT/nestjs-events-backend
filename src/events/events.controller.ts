@@ -4,21 +4,25 @@ import {
   Delete,
   Get,
   HttpCode,
-  Inject,
   Logger,
   NotFoundException,
   Param,
   ParseIntPipe,
   Patch,
   Post,
+  Query,
+  UsePipes,
+  ValidationPipe,
 } from '@nestjs/common';
-import { CreateEventDto } from './create-event.dto';
-import { UpdateEventDto } from './update-event.dto';
+import { CreateEventDto } from './input/create-event.dto';
+import { UpdateEventDto } from './input/update-event.dto';
 import { Event } from './event.entity';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Attendee } from './attendee.entity';
 import { EventsService } from './events.service';
+import { ListEvents } from './input/list-event';
+import { PaginationResult } from 'src/pagination/pagination';
 
 @Controller('/events')
 export class EventsController {
@@ -32,10 +36,19 @@ export class EventsController {
   ) {}
 
   @Get()
-  async findAll(): Promise<Event[]> {
+  @UsePipes(new ValidationPipe({ transform: true }))
+  async findAll(@Query() filter: ListEvents): Promise<PaginationResult<Event>> {
     this.logger.log('Hit findAll route');
-    const events = await this.repository.find();
-    this.logger.debug(`found ${events.length} events`);
+    const events =
+      await this.eventsService.getEventsWithAttendeeCountFilteredPaginated(
+        filter,
+        {
+          total: true,
+          currentPage: filter.page,
+          limit: 2,
+        },
+      );
+    this.logger.debug(`found ${events.data.length} events`);
     return events;
   }
 
