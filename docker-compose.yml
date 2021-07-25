@@ -2,15 +2,16 @@ version: "3"
 
 services: 
     mysql:
+        container_name: mysql
         image: mysql:8.0.23
-        command: --default-authentication-plugin=mysql_native_password
+        command: mysqld --default-authentication-plugin=mysql_native_password --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
         volumes: 
             - ./volumes/mysql:/var/lib/mysql
         ports: 
             - "127.0.0.1:3306:3306"
         restart: unless-stopped
         environment: 
-            MYSQL_ROOT_PASSWORD: example
+            MYSQL_ROOT_PASSWORD: example                     
         networks: 
             - srv
         
@@ -28,6 +29,7 @@ services:
             - srv
             
     adminer:
+        container_name: adminer
         image: adminer
         restart: unless-stopped
         ports:
