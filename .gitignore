@@ -46,3 +46,4 @@ volumes
 
 http/*
 http/*.http
+.swp
