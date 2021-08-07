@@ -111,6 +111,6 @@ export class EventsController {
     if (result?.affected !== 1) {
       throw new NotFoundException();
     }
-    //await this.repository.remove(event);    
+    //await this.repository.remove(event);
   }
 }

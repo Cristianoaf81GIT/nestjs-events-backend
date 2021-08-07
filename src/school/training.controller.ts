@@ -18,7 +18,7 @@ export class TrainingController {
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
     @InjectRepository(Profile)
-    private readonly profileRepository: Repository<Profile>
+    private readonly profileRepository: Repository<Profile>,
   ) {}
 
   @Post('/create')
@@ -27,19 +27,19 @@ export class TrainingController {
     const teacher1 = await this.teacherRepository.findOne(1);
     const teacher2 = await this.teacherRepository.findOne(2);
     return await this.subjectRepository
-        .createQueryBuilder()
-        .relation(Subject, 'teachers')
-        .of(subject)
-        .add([teacher1,teacher2]);
+      .createQueryBuilder()
+      .relation(Subject, 'teachers')
+      .of(subject)
+      .add([teacher1, teacher2]);
   }
 
   @Post('/remove')
   public async removingRelation() {
-     await this.subjectRepository
-        .createQueryBuilder('s')
-        .update()
-        .set({ name: 'Confidential' })
-        .execute();
+    await this.subjectRepository
+      .createQueryBuilder('s')
+      .update()
+      .set({ name: 'Confidential' })
+      .execute();
   }
 
   @Post('/user')
@@ -55,6 +55,6 @@ export class TrainingController {
     // must be save profile on database first and then return a record
     let userProfile = await this.profileRepository.save(profile);
     user.profile = userProfile;
-    return await this.userRepository.save(user);    
+    return await this.userRepository.save(user);
   }
 }
