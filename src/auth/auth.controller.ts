@@ -22,7 +22,7 @@ export class AuthController {
   async login(@CurrentUser() user: User) {
     this.logger.debug('a new  login request is arived');
     return {
-      userId:user.id,
+      userId: user.id,
       token: this.authService.getTokenForUser(user),
     };
   }
