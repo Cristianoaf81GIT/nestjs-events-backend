@@ -1,12 +1,6 @@
-import {
-  Controller,
-  Post,
-  UseGuards,
-  Request,
-  Logger,
-  Get,
-} from '@nestjs/common';
-import { AuthGuard } from '@nestjs/passport';
+import { Controller, Post, UseGuards, Logger, Get } from '@nestjs/common';
+import { AuthGuardJwt } from './auth-guard.jwt';
+import { AuthGuardLocal } from './auth-guard.local';
 import { AuthService } from './auth.service';
 import { CurrentUser } from './current-user.decorator';
 import { User } from './user.entity';
@@ -18,7 +12,7 @@ export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
   @Post('login')
-  @UseGuards(AuthGuard('local'))
+  @UseGuards(AuthGuardLocal)
   async login(@CurrentUser() user: User) {
     this.logger.debug('a new  login request is arived');
     return {
@@ -28,7 +22,7 @@ export class AuthController {
   }
 
   @Get('profile')
-  @UseGuards(AuthGuard('jwt'))
+  @UseGuards(AuthGuardJwt)
   async getProfile(@CurrentUser() user: User) {
     return user;
   }

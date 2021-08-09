@@ -15,18 +15,18 @@ services:
         networks: 
             - srv
         
-    postgres:
-        image: postgres:13.1
-        environment: 
-            PGDATA: /var/lib/postgresql/data/pgdata
-            POSTGRES_PASSWORD: example
-        volumes:
-            - ./volumes/postgres:/var/lib/postgresql/data
-        ports: 
-            - "127.0.0.1:5432:5432"
-        restart: unless-stopped    
-        networks: 
-            - srv
+    # postgres:
+    #     image: postgres:13.1
+    #     environment: 
+    #         PGDATA: /var/lib/postgresql/data/pgdata
+    #         POSTGRES_PASSWORD: example
+    #     volumes:
+    #         - ./volumes/postgres:/var/lib/postgresql/data
+    #     ports: 
+    #         - "127.0.0.1:5432:5432"
+    #     restart: unless-stopped    
+    #     networks: 
+    #         - srv
             
     adminer:
         container_name: adminer

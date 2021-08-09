@@ -50,10 +50,10 @@ export class TrainingController {
     user.firstName = input.firstName;
     user.lastName = input.lastName;
     user.password = input.password;
-    let profile: Profile = new Profile();
+    const profile: Profile = new Profile();
     profile.age = input.age;
     // must be save profile on database first and then return a record
-    let userProfile = await this.profileRepository.save(profile);
+    const userProfile = await this.profileRepository.save(profile);
     user.profile = userProfile;
     return await this.userRepository.save(user);
   }

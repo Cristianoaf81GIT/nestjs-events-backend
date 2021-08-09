@@ -11,6 +11,7 @@ import {
   Patch,
   Post,
   Query,
+  UseGuards,
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
@@ -23,6 +24,9 @@ import { Attendee } from './attendee.entity';
 import { EventsService } from './events.service';
 import { ListEvents } from './input/list-event';
 import { PaginationResult } from 'src/pagination/pagination';
+import { CurrentUser } from 'src/auth/current-user.decorator';
+import { User } from 'src/auth/user.entity';
+import { AuthGuardJwt } from 'src/auth/auth-guard.jwt';
 
 @Controller('/events')
 export class EventsController {
@@ -80,11 +84,13 @@ export class EventsController {
   }
 
   @Post()
-  async create(@Body() input: CreateEventDto): Promise<Event> {
-    return await this.repository.save({
-      ...input,
-      when: new Date(input.when),
-    });
+  @UseGuards(AuthGuardJwt)
+  async create(
+    @Body() input: CreateEventDto,
+    // eslint-disable-next-line @typescript-eslint/indent
+    @CurrentUser() user: User,
+  ): Promise<Event> {
+    return await this.eventsService.createEvent(input, user);
   }
 
   @Patch(':id')

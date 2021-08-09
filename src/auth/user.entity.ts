@@ -1,7 +1,10 @@
+import { Exclude } from 'class-transformer';
+import { Event } from 'src/events/event.entity';
 import {
   Column,
   Entity,
   JoinColumn,
+  OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
@@ -11,11 +14,12 @@ import { Profile } from './profile.entity';
 export class User {
   @PrimaryGeneratedColumn()
   id: number;
-  @Column({unique: true})
+  @Column({ unique: true })
   username: string;
+  @Exclude()
   @Column()
   password: string;
-  @Column({unique: true})
+  @Column({ unique: true })
   email: string;
   @Column()
   firstName: string;
@@ -24,4 +28,6 @@ export class User {
   @OneToOne(() => Profile)
   @JoinColumn()
   profile: Profile;
+  @OneToMany(() => Event, (event) => event.organizer)
+  organized: Event[];
 }
