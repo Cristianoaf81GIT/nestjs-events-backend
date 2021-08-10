@@ -1,5 +1,6 @@
 import {
   Body,
+  ClassSerializerInterceptor,
   Controller,
   Delete,
   ForbiddenException,
@@ -12,7 +13,9 @@ import {
   Patch,
   Post,
   Query,
+  SerializeOptions,
   UseGuards,
+  UseInterceptors,
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
@@ -27,12 +30,14 @@ import { User } from 'src/auth/user.entity';
 import { AuthGuardJwt } from 'src/auth/auth-guard.jwt';
 
 @Controller('/events')
+@SerializeOptions({ strategy: 'excludeAll' })
 export class EventsController {
   private readonly logger = new Logger(EventsController.name);
   constructor(private readonly eventsService: EventsService) {}
 
   @Get()
   @UsePipes(new ValidationPipe({ transform: true }))
+  @UseInterceptors(ClassSerializerInterceptor)
   async findAll(@Query() filter: ListEvents): Promise<PaginationResult<Event>> {
     this.logger.log('Hit findAll route');
     const events =
@@ -49,6 +54,7 @@ export class EventsController {
   }
 
   @Get(':id')
+  @UseInterceptors(ClassSerializerInterceptor)
   async findOne(@Param('id', ParseIntPipe) id: number): Promise<Event> {
     const event: Event = await this.eventsService.getEvent(id);
     if (!event) {
@@ -59,6 +65,7 @@ export class EventsController {
 
   @Post()
   @UseGuards(AuthGuardJwt)
+  @UseInterceptors(ClassSerializerInterceptor)
   async create(
     @Body() input: CreateEventDto,
     @CurrentUser() user: User,
@@ -68,6 +75,7 @@ export class EventsController {
 
   @Patch(':id')
   @UseGuards(AuthGuardJwt)
+  @UseInterceptors(ClassSerializerInterceptor)
   async update(
     @Param('id', ParseIntPipe) id: number,
     @Body() input: UpdateEventDto,

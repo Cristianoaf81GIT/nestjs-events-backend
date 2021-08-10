@@ -4,6 +4,7 @@ import {
   ClassSerializerInterceptor,
   Controller,
   Post,
+  SerializeOptions,
   UseInterceptors,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -13,6 +14,7 @@ import { CreateUserDto } from './input/create.user.dto';
 import { User } from './user.entity';
 
 @Controller('users')
+@SerializeOptions({ strategy: 'excludeAll' })
 export class UsersController {
   constructor(
     private readonly authService: AuthService,
@@ -20,8 +22,8 @@ export class UsersController {
     private readonly userRepository: Repository<User>,
   ) {}
 
-  @UseInterceptors(ClassSerializerInterceptor)
   @Post()
+  @UseInterceptors(ClassSerializerInterceptor)
   async create(@Body() createUserDto: CreateUserDto) {
     const user = new User();
 
