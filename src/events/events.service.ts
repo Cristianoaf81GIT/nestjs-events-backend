@@ -7,6 +7,7 @@ import { AttendeeAnswerEnum } from './attendee.entity';
 import { Event } from './event.entity';
 import { CreateEventDto } from './input/create-event.dto';
 import { ListEvents, WhenEventFilter } from './input/list-event';
+import { UpdateEventDto } from './input/update-event.dto';
 
 @Injectable()
 export class EventsService {
@@ -59,7 +60,6 @@ export class EventsService {
   }
 
   public async getEvent(id: number): Promise<Event | undefined> {
-    //const query = this.getEventsBaseQuery().andWhere('e.id = :id', { id });
     const query = this.getEventsWithAttendeeCountQuery().andWhere(
       'e.id = :id',
       { id },
@@ -73,6 +73,17 @@ export class EventsService {
       ...input,
       when: new Date(input.when),
       organizer: user,
+    });
+  }
+
+  public async updateEvent(
+    event: Event,
+    input: UpdateEventDto,
+  ): Promise<Event> {
+    return await this.eventsRepository.save({
+      ...event,
+      ...input,
+      when: input.when ? new Date(input.when) : event.when,
     });
   }
 

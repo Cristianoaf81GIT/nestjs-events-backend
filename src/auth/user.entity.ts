@@ -1,4 +1,4 @@
-import { Exclude } from 'class-transformer';
+import { classToPlain, Exclude } from 'class-transformer';
 import { Event } from 'src/events/event.entity';
 import {
   Column,
@@ -16,7 +16,7 @@ export class User {
   id: number;
   @Column({ unique: true })
   username: string;
-  @Exclude()
+  @Exclude({ toPlainOnly: true })
   @Column()
   password: string;
   @Column({ unique: true })
@@ -30,4 +30,8 @@ export class User {
   profile: Profile;
   @OneToMany(() => Event, (event) => event.organizer)
   organized: Event[];
+
+  toJSON() {
+    return classToPlain(this);
+  }
 }
