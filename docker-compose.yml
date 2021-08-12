@@ -14,7 +14,8 @@ services:
             MYSQL_ROOT_PASSWORD: example                     
         networks: 
             - srv
-        
+
+    # uncomment if you prefer postgres    
     # postgres:
     #     image: postgres:13.1
     #     environment: 
@@ -36,6 +37,15 @@ services:
             - "127.0.0.1:8080:8080"
         networks: 
             - srv
+    
+    # nest_events_backend:
+    #     build: .
+    #     ports:
+    #         - "127.0.0.1:3000:3000"
+    #     depends_on: 
+    #         - mysql
+    #     networks:
+    #         - srv
 
 networks: 
     srv:
