@@ -7,6 +7,7 @@ import {
   SerializeOptions,
   UseInterceptors,
   ClassSerializerInterceptor,
+  HttpCode,
 } from '@nestjs/common';
 import { AuthGuardJwt } from './auth-guard.jwt';
 import { AuthGuardLocal } from './auth-guard.local';
@@ -23,6 +24,7 @@ export class AuthController {
 
   @Post('login')
   @UseGuards(AuthGuardLocal)
+  @HttpCode(200)
   async login(@CurrentUser() user: User) {
     this.logger.debug('a new  login request is arived');
     return {

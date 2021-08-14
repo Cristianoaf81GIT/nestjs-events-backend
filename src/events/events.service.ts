@@ -157,7 +157,9 @@ export class EventsService {
   private getEventsOrganizedByUserIdQuery(
     userId: number,
   ): SelectQueryBuilder<Event> {
-    return this.getEventsBaseQuery().where('e.organizerId = :id', { userId });
+    return this.getEventsBaseQuery().where('e.organizerId = :userId', {
+      userId,
+    });
   }
 
   public async getEventsAttendedByUserIdPaginated(

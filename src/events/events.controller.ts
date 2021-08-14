@@ -55,6 +55,7 @@ export class EventsController {
 
   @Get(':id')
   @UseInterceptors(ClassSerializerInterceptor)
+  @UseGuards(AuthGuardJwt)
   async findOne(@Param('id', ParseIntPipe) id: number): Promise<Event> {
     const event: Event = await this.eventsService.getEventWithAttendeeCount(id);
     if (!event) {
