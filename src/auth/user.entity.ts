@@ -1,4 +1,4 @@
-import { classToPlain, Exclude, Expose } from 'class-transformer';
+import { Expose } from 'class-transformer';
 import { Attendee } from 'src/events/attendee.entity';
 import { Event } from 'src/events/event.entity';
 import {

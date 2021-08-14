@@ -20,9 +20,6 @@ export class Attendee {
   @PrimaryGeneratedColumn()
   @Expose()
   id: number;
-  @Column()
-  @Expose()
-  name: string;
 
   @ManyToOne(() => Event, (event) => event.attendees, { nullable: true })
   @JoinColumn()
@@ -39,6 +36,7 @@ export class Attendee {
   answer: AttendeeAnswerEnum;
 
   @ManyToOne(() => User, (user) => user.attended)
+  @Expose()
   user: User;
 
   @Column()
