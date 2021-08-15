@@ -24,10 +24,10 @@ import { UpdateEventDto } from './input/update-event.dto';
 import { Event } from './event.entity';
 import { EventsService } from './events.service';
 import { ListEvents } from './input/list-event';
-import { PaginationResult } from 'src/pagination/pagination';
-import { CurrentUser } from 'src/auth/current-user.decorator';
-import { User } from 'src/auth/user.entity';
-import { AuthGuardJwt } from 'src/auth/auth-guard.jwt';
+import { PaginationResult } from './../pagination/pagination';
+import { CurrentUser } from './../auth/current-user.decorator';
+import { User } from './../auth/user.entity';
+import { AuthGuardJwt } from './../auth/auth-guard.jwt';
 
 @Controller('/events')
 @SerializeOptions({ strategy: 'excludeAll' })
